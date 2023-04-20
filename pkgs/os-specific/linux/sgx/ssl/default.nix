@@ -3,6 +3,7 @@
 , fetchpatch
 , fetchurl
 , lib
+, openssl
 , perl
 , sgx-sdk
 , which
@@ -10,7 +11,7 @@
 }:
 let
   sgxVersion = sgx-sdk.versionTag;
-  opensslVersion = "1.1.1l";
+  opensslVersion = "1.1.1t";
 in
 stdenv.mkDerivation rec {
   pname = "sgx-ssl" + lib.optionalString debug "-debug";
@@ -20,24 +21,19 @@ stdenv.mkDerivation rec {
     owner = "intel";
     repo = "intel-sgx-ssl";
     rev = "lin_${sgxVersion}_${opensslVersion}";
-    hash = "sha256-ibPXs90ni2fkxJ09fNO6wWVpfCFdko6MjBFkEsyIih8=";
+    hash = "sha256-EpEtsYBa0I5oF0QwdKwjCRV70t1kujzkuT8kjWDpSn0=";
   };
 
   postUnpack =
     let
       opensslSourceArchive = fetchurl {
         url = "https://www.openssl.org/source/openssl-${opensslVersion}.tar.gz";
-        hash = "sha256-C3o+XlnDSCf+DDp0t+yLrvMCuY+oAIjX+RU6oW+na9E=";
+        hash = "sha256-je6bJL2x3L8MPR6bAvuPa/IhZegH9Fret8lndTaFnTs=";
       };
     in
     ''
       ln -s ${opensslSourceArchive} $sourceRoot/openssl_source/openssl-${opensslVersion}.tar.gz
     '';
-
-  patches = [
-    # https://github.com/intel/intel-sgx-ssl/pull/111
-    ./intel-sgx-ssl-pr-111.patch
-  ];
 
   postPatch = ''
     patchShebangs Linux/build_openssl.sh
@@ -51,6 +47,7 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
 
   nativeBuildInputs = [
+    openssl
     perl
     sgx-sdk
     stdenv.cc.libc
