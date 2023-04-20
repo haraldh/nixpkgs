@@ -1,6 +1,7 @@
 { stdenv
 , lib
 , makeWrapper
+, openssl
 , sgx-sdk
 , sgx-psw
 , which
@@ -18,6 +19,7 @@ let
 
     nativeBuildInputs = [
       makeWrapper
+      openssl
       which
     ];
 

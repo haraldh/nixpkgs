@@ -6,6 +6,7 @@
 , autoconf
 , automake
 , binutils
+, boost
 , callPackage
 , cmake
 , file
@@ -14,10 +15,12 @@
 , libtool
 , linkFarmFromDrvs
 , nasm
+, ncurses
 , ocaml
 , ocamlPackages
 , openssl_1_1
 , perl
+, protobuf
 , python3
 , texinfo
 , validatePkgConfig
@@ -29,15 +32,15 @@
 stdenv.mkDerivation rec {
   pname = "sgx-sdk";
   # Version as given in se_version.h
-  version = "2.16.100.4";
+  version = "2.19.100.3";
   # Version as used in the Git tag
-  versionTag = "2.16";
+  versionTag = "2.19";
 
   src = fetchFromGitHub {
     owner = "intel";
     repo = "linux-sgx";
     rev = "sgx_${versionTag}";
-    hash = "sha256-qgXuJJWiqmcU11umCsE3DnlK4VryuTDAsNf53YPw6UY=";
+    hash = "sha256-6UGcY3evRIDtkjYB1kJWs5HaLFksBw0m+8vyC/nPttc=";
     fetchSubmodules = true;
   };
 
@@ -71,12 +74,15 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [
     autoconf
     automake
+    boost
     cmake
     file
     git
+    ncurses
     ocaml
     ocamlPackages.ocamlbuild
     perl
+    protobuf
     python3
     texinfo
     validatePkgConfig
@@ -128,6 +134,8 @@ stdenv.mkDerivation rec {
       install -D ${ipp-crypto-no_mitigation.src}/LICENSE license/LICENSE
 
       popd
+      patchShebangs ./external/sgx-emm/create_symlink.sh
+      ./external/sgx-emm/create_symlink.sh
     '';
 
   buildFlags = [
@@ -165,6 +173,7 @@ stdenv.mkDerivation rec {
     # Move `lib64` to `lib` and symlink `lib64`
     mv $installDir/lib64 lib
     ln -s lib/ lib64
+    ln -sfr lib/libsgx_urts.so lib/libsgx_urts.so.2
 
     mv $installDir/include/ .
 
