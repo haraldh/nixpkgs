@@ -6,6 +6,7 @@
 , autoconf
 , automake
 , binutils
+, boost
 , callPackage
 , cmake
 , file
@@ -14,10 +15,12 @@
 , libtool
 , linkFarmFromDrvs
 , nasm
+, ncurses
 , ocaml
 , ocamlPackages
-, openssl_1_1
+, openssl
 , perl
+, protobuf
 , python3
 , texinfo
 , validatePkgConfig
@@ -93,12 +96,15 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [
     autoconf
     automake
+    boost
     cmake
     file
     git
+    ncurses
     ocaml
     ocamlPackages.ocamlbuild
     perl
+    protobuf
     python3
     texinfo
     validatePkgConfig
@@ -106,7 +112,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     libtool
-    openssl_1_1
+    openssl
   ];
 
   BINUTILS_DIR = "${binutils}/bin";
@@ -150,6 +156,8 @@ stdenv.mkDerivation rec {
       install -D ${ipp-crypto-no_mitigation.src}/LICENSE license/LICENSE
 
       popd
+      patchShebangs ./external/sgx-emm/create_symlink.sh
+      ./external/sgx-emm/create_symlink.sh
     '';
 
   buildFlags = [
@@ -187,6 +195,7 @@ stdenv.mkDerivation rec {
     # Move `lib64` to `lib` and symlink `lib64`
     mv $installDir/lib64 lib
     ln -s lib/ lib64
+    ln -sfr lib/libsgx_urts.so lib/libsgx_urts.so.2
 
     # Fixup the symlinks for libsgx_urts.so.* -> libsgx_urts.so
     for file in lib/libsgx_urts.so.*; do

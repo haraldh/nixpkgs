@@ -46,6 +46,7 @@ stdenv.mkDerivation {
   enableParallelBuilding = true;
 
   nativeBuildInputs = [
+    openssl
     perl
     sgx-sdk
     stdenv.cc.libc

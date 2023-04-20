@@ -2,7 +2,8 @@
 , fetchFromGitHub
 , cmake
 , nasm
-, openssl_1_1
+, ninja
+, openssl
 , python3
 , extraCmakeFlags ? [ ]
 }:
@@ -22,9 +23,8 @@ gcc11Stdenv.mkDerivation rec {
   nativeBuildInputs = [
     cmake
     nasm
-    # TODO(phlip9): The most recent `ipp-crypto` version (2021.9) now uses
-    # OpenSSL v3 so we can avoid this EOL version when sgx-sdk updates.
-    openssl_1_1
+    ninja
+    openssl
     python3
   ];
 }

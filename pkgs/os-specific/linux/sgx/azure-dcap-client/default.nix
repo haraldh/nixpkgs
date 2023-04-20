@@ -53,6 +53,10 @@ stdenv.mkDerivation rec {
     openssl
   ];
 
+  patches = [
+    ./Azure-DCAP-Client.patch # workaround for out-of-date TCB data
+  ];
+
   postPatch = ''
     mkdir -p src/Linux/ext/intel
     find -L '${headers}' -type f -exec ln -s {} src/Linux/ext/intel \;
