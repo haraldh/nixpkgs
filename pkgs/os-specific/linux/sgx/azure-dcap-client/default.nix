@@ -44,13 +44,13 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "azure-dcap-client";
-  version = "1.11.2";
+  version = "1.12.0";
 
   src = fetchFromGitHub {
     owner = "microsoft";
     repo = pname;
     rev = version;
-    hash = "sha256-EYj3jnzTyJRl6N7avNf9VrB8r9U6zIE6wBNeVsMtWCA=";
+    hash = "sha256-CGwCKqHX0NGstVu3xtER9nhUe99A/omNRwq4HvmZkdg=";
   };
 
   nativeBuildInputs = [
