@@ -18,7 +18,7 @@
 , ncurses
 , ocaml
 , ocamlPackages
-, openssl_1_1
+, openssl
 , perl
 , protobuf
 , python3
@@ -90,7 +90,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     libtool
-    openssl_1_1
+    openssl
   ];
 
   BINUTILS_DIR = "${binutils}/bin";
