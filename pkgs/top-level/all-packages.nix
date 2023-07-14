@@ -26938,6 +26938,8 @@ with pkgs;
 
   libnl-tiny = callPackage ../os-specific/linux/libnl-tiny { };
 
+  libsgx-dcap-quote-verify = callPackage ../os-specific/linux/sgx/dcap-quote-verify { };
+
   libtraceevent = callPackage ../os-specific/linux/libtraceevent { };
 
   libtracefs = callPackage ../os-specific/linux/libtracefs { };
@@ -27575,6 +27577,8 @@ with pkgs;
   sgx-ssl = callPackage ../os-specific/linux/sgx/ssl { };
 
   sgx-psw = callPackage ../os-specific/linux/sgx/psw { };
+
+  sgx-dcap = callPackage ../os-specific/linux/sgx/dcap { };
 
   shadow = callPackage ../os-specific/linux/shadow { };
 
